@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DarkSaver": {
+      "commandName": "Project",
+      "commandLineArgs": "/s"
+    }
+  }
+}
