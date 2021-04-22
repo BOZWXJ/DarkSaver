@@ -12,10 +12,17 @@ namespace DarkSaver
 {
 	public partial class FormScreenSaver : Form
 	{
+		public bool IsPreviewMode { get; }
+
 		public FormScreenSaver(Screen screen)
 		{
 			InitializeComponent();
-			this.Bounds = screen.Bounds;
+
+			Capture = true;
+			Bounds = screen.Bounds;
+			pictureBox1.Visible = false;
+			Opacity = 0.8;
+
 			rect = new Rectangle(Cursor.Position.X - 10, Cursor.Position.Y - 10, 20, 20);
 
 			IsPreviewMode = false;
@@ -24,6 +31,7 @@ namespace DarkSaver
 		public FormScreenSaver(IntPtr PreviewHandle)
 		{
 			InitializeComponent();
+
 			//このウィンドウの親ウィンドウを設定する
 			Win32API.SetParent(this.Handle, PreviewHandle);
 
@@ -37,10 +45,19 @@ namespace DarkSaver
 			Size = ParentRect.Size;
 			Location = new Point(0, 0);
 
+			pictureBox1.Image = new Bitmap(Bounds.Width, Bounds.Height);
+			using (Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height))
+			using (Brush brush = new SolidBrush(Color.FromArgb(205, 0, 0, 0)))
+			using (Graphics g1 = Graphics.FromImage(bmp))
+			using (Graphics g2 = Graphics.FromImage(pictureBox1.Image)) {
+				g1.CopyFromScreen(0, 0, 0, 0, bmp.Size);
+				g2.DrawImage(bmp, pictureBox1.Bounds);
+				g2.FillRectangle(brush, pictureBox1.Bounds);
+				pictureBox1.Refresh();
+			}
+
 			IsPreviewMode = true;
 		}
-
-		public bool IsPreviewMode { get; }
 
 		private void FormScreenSaver_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -57,12 +74,12 @@ namespace DarkSaver
 		}
 
 		Rectangle rect;
-
 		private void FormScreenSaver_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (!IsPreviewMode && !rect.Contains(Cursor.Position)) {
 				Environment.Exit(0);
 			}
 		}
+
 	}
 }

@@ -28,7 +28,18 @@ namespace DarkSaver
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(800, 450);
+			this.pictureBox1.TabIndex = 0;
+			this.pictureBox1.TabStop = false;
 			// 
 			// FormScreenSaver
 			// 
@@ -37,19 +48,22 @@ namespace DarkSaver
 			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.ControlBox = false;
+			this.Controls.Add(this.pictureBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.KeyPreview = true;
 			this.Name = "FormScreenSaver";
-			this.Opacity = 0.8D;
 			this.Text = "FormScreenSaver";
 			this.TopMost = true;
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormScreenSaver_KeyDown);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormScreenSaver_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormScreenSaver_MouseMove);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
+
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }
