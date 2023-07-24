@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PInvoke;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,16 +34,16 @@ namespace DarkSaver
 			InitializeComponent();
 
 			//このウィンドウの親ウィンドウを設定する
-			Win32API.SetParent(this.Handle, PreviewHandle);
+			User32.SetParent(this.Handle, PreviewHandle);
 
 			//この子ウィンドウを作成する
 			//スクリーンセーバーの設定ダイアログボックスが閉じられると終了する
-			Win32API.SetWindowLong(this.Handle, -16, new IntPtr(Win32API.GetWindowLong(this.Handle, -16) | 0x40000000));
+			User32.SetWindowLong(this.Handle, User32.WindowLongIndexFlags.GWL_STYLE, (User32.SetWindowLongFlags)(User32.GetWindowLong(this.Handle, User32.WindowLongIndexFlags.GWL_STYLE) | 0x40000000));
 
 			//親ウィンドウのサイズに設定する
-			Rectangle ParentRect;
-			Win32API.GetClientRect(PreviewHandle, out ParentRect);
-			Size = ParentRect.Size;
+			RECT ParentRect;
+			User32.GetClientRect(PreviewHandle, out ParentRect);
+			Size = new Size(ParentRect.right - ParentRect.left + 1, ParentRect.bottom - ParentRect.top + 1);
 			Location = new Point(0, 0);
 
 			pictureBox1.Image = new Bitmap(Bounds.Width, Bounds.Height);

@@ -1,4 +1,6 @@
+ï»¿using PInvoke;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DarkSaver
@@ -13,7 +15,7 @@ namespace DarkSaver
 			Application.SetCompatibleTextRenderingDefault(false);
 			int i;
 			if (args.Length >= 1 && args[0].StartsWith("/s", StringComparison.OrdinalIgnoreCase)) {
-				// ƒXƒNƒŠ[ƒ“ƒZ[ƒo[•\¦
+				// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚»ãƒ¼ãƒãƒ¼è¡¨ç¤º
 				foreach (Screen screen in Screen.AllScreens) {
 					var form = new FormScreenSaver(screen);
 					form.Show();
@@ -21,11 +23,11 @@ namespace DarkSaver
 				Cursor.Hide();
 				Application.Run();
 			} else if (args.Length >= 2 && args[0].StartsWith("/p", StringComparison.OrdinalIgnoreCase)) {
-				// ƒvƒŒƒrƒ…[•\¦
+				// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼è¡¨ç¤º
 				Application.Run(new FormScreenSaver(new IntPtr(long.Parse(args[1]))));
 			} else if (args.Length >= 1 && args[0].StartsWith("/c", StringComparison.OrdinalIgnoreCase) && args[0].Length > 3 && int.TryParse(args[0].Substring(3), out i)) {
-				// İ’èƒtƒH[ƒ€•\¦
-				ShowConfigForm(Win32API.GetAncestor(new IntPtr(i), Win32API.GA_ROOT));
+				// è¨­å®šãƒ•ã‚©ãƒ¼ãƒ è¡¨ç¤º
+				ShowConfigForm(User32.GetAncestor(new IntPtr(i), User32.GetAncestorFlags.GA_ROOT));
 			} else {
 				ShowConfigForm(IntPtr.Zero);
 			}
@@ -33,19 +35,19 @@ namespace DarkSaver
 
 		static void ShowConfigForm(IntPtr owner)
 		{
-			string text = "ƒIƒvƒVƒ‡ƒ“‚È‚µ\n\n‚±‚ÌƒXƒNƒŠ[ƒ“ ƒZ[ƒo[‚É‚ÍAİ’è‚Å‚«‚éƒIƒvƒVƒ‡ƒ“‚Í‚ ‚è‚Ü‚¹‚ñB";
-			string caption = "Dark Saver";
-			if (owner != IntPtr.Zero) {
-				MessageBox.Show(new NativeForm(owner), text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-			} else {
-				MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			//Form form = new FormSetting();
+			//string text = "ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãªã—\n\nã“ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ ã‚»ãƒ¼ãƒãƒ¼ã«ã¯ã€è¨­å®šã§ãã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚";
+			//string caption = "Dark Saver";
 			//if (owner != IntPtr.Zero) {
-			//	form.ShowDialog(new NativeForm(owner));
+			//	MessageBox.Show(new NativeForm(owner), text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			//} else {
-			//	form.ShowDialog();
+			//	MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			//}
+			Form form = new FormSetting();
+			if (owner != IntPtr.Zero) {
+				form.ShowDialog(new NativeForm(owner));
+			} else {
+				form.ShowDialog();
+			}
 		}
 	}
 
